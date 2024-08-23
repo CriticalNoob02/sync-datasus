@@ -1,15 +1,16 @@
 package task
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"strings"
 	"sync-datasus/core/config"
+	"sync-datasus/core/util"
 )
 
-func Converter(filename string) (bool, error) {
+// Funcao responsavel por converter um arquivo DBC para o formato DBF;
+func Converter(filename string) (string, error) {
 	filenameDbf := strings.Replace(filename, ".dbc", ".dbf", 1)
 	pathDbc := fmt.Sprintf("%s/%s", config.GetDownloadPath(), filename)
 	pathDbf := fmt.Sprintf("%s/%s", config.GetExtractPath(), filenameDbf)
@@ -17,13 +18,15 @@ func Converter(filename string) (bool, error) {
 	command := exec.Command("core/service/blast/blast-dbf", pathDbc, pathDbf)
 	err := command.Run()
 	if err != nil {
-		return false, errors.New("<fg=magenta> Converter</> - " + err.Error())
+		util.Logger.Error("Opss", "err", err.Error())
+		return "", err
 	}
 
 	err = os.Remove(pathDbc)
 	if err != nil {
-		return false, errors.New("<fg=magenta> Converter</> - " + err.Error())
+		util.Logger.Error("Opss", "err", err.Error())
+		return "", err
 	}
 
-	return true, nil
+	return filenameDbf, nil
 }
