@@ -18,7 +18,6 @@ var (
 
 func getConfig() *pgxpool.Config {
 	const (
-		defaultMaxConns          = int32(2)
 		defaultMinConns          = int32(0)
 		defaultMaxConnLifetime   = time.Hour
 		defaultMaxConnIdleTime   = time.Minute * 10
@@ -30,7 +29,7 @@ func getConfig() *pgxpool.Config {
 		util.Logger.Fatal("Opss", "err", err.Error())
 	}
 
-	dbConfig.MaxConns = defaultMaxConns
+	dbConfig.MaxConns = int32(config.GetNumWorks())
 	dbConfig.MinConns = defaultMinConns
 	dbConfig.MaxConnLifetime = defaultMaxConnLifetime
 	dbConfig.MaxConnIdleTime = defaultMaxConnIdleTime
