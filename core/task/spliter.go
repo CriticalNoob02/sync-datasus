@@ -2,6 +2,7 @@ package task
 
 import "sync-datasus/core/config"
 
+// Funcao responsavel por realizar a separacao da lista em batchs;
 func Spliter(list []string) [][]string {
 	listLen := len(list)
 	batch := config.GetBatchLimit()

@@ -8,6 +8,8 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+// Funcao responsavel por efetuar a leitura e filtragem da lista
+// de arquivos na conexao FTP;
 func Reader() []string {
 	conn := service.FtpLogin("anonymous", "anonymous", config.GetFtpUrl())
 
