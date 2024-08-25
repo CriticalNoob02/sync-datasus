@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on:
+  push
+
+env:
+  REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+jobs:
+  check-app:
+    runs-on: ubuntu-latest   
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.22.6
+    
+    - uses: reviewdog/action-setup@v1
+      with:
+        reviewdog_version: latest 
+
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+         
+    - name: Run revive      
+      run: go install github.com/mgechev/revive@latest  
+
+    - name: Run golangci-lint      
+      run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+ 
+    - name: Run misspell check spelling     
+      run:  go get -u github.com/client9/misspell/cmd/misspell
+    
+    - name: Run unparam to check for unused params    
+      run:  go install mvdan.cc/unparam@latest
+
+    - name: Setup security linter
+      run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+    - name: Run reviewdog github-check
+      continue-on-error: true      
+      run: reviewdog -reporter=github-check  
