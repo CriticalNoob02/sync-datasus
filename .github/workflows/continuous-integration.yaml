@@ -3,9 +3,7 @@ name: Continuous Integration
 on:
   workflow_dispatch:
   push:
-
-env:
-  REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  pull_request:
       
 jobs:
   check-app:
@@ -19,23 +17,18 @@ jobs:
       with:
         go-version: 1.22.6
     
-    - uses: reviewdog/action-setup@v1
+    - name: Run staticcheck with Reviewdog
+      uses: reviewdog/action-staticcheck@v1
       with:
-        reviewdog_version: latest 
+        level: error
+        reporter: github-pr-review
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run Staticcheck lint
-      uses: dominikh/staticcheck-action@v1
+    - name: Run revive with Reviewdog
+      uses: reviewdog/action-revive@v1
       with:
-        version: "latest"
-         
-    - name: Run Revive lint
-      uses: morphy2k/revive-action@v2
-
-    - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v6
-      with:
-        version: v1.60
-
-    - name: Run reviewdog github-check
-      continue-on-error: true      
-      run: reviewdog -reporter=github-check  
+        level: error
+        reporter: github-pr-review
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
