@@ -31,3 +31,6 @@ jobs:
         fail_on_error: true
         golangci_lint_flags: --out-format=line-number
         github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Run testes
+      run: echo "Sera adicionado..."
