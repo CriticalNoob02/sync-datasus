@@ -28,8 +28,6 @@ jobs:
       uses: reviewdog/action-golangci-lint@v2
       with:
         reporter: github-pr-review
-        filter-mode: diff_context
         fail_on_error: true
-        level: error
         golangci_lint_flags: --out-format=line-number
         github_token: ${{ secrets.GITHUB_TOKEN }}
