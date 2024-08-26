@@ -17,21 +17,17 @@ jobs:
       with:
         go-version: 1.22.6
     
-    - name: Run staticcheck with Reviewdog
-      uses: reviewdog/action-staticcheck@v1
-      with:
-        level: error
-        reporter: github-pr-review
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install golangci-lint
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
 
-    - name: Run misspell
-      uses: reviewdog/action-misspell@v1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        locale: "US"
+    - name: Run golangci-lint
+      run: golangci-lint run --out-format=line-number > golangci-lint-report.txt || true
+      continue-on-error: true
 
     - name: golangci-lint
       uses: reviewdog/action-golangci-lint@v2
       with:
+        reporter: github-pr-review
         golangci_lint_flags: "--enable-all --exclude-use-default=false"
         github_token: ${{ secrets.GITHUB_TOKEN }}
