@@ -8,6 +8,9 @@ jobs:
   check-app:
     runs-on: ubuntu-latest   
     steps:
+    - name: Clean
+      uses: AutoModality/action-clean@v1
+
     - name: Checkout code
       uses: actions/checkout@v4
     
@@ -20,11 +23,14 @@ jobs:
       run: |
         curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
 
+    - name: Remove old lint report
+      run: rm -f golangci-lint-report.txt
+    
     - name: Run golangci-lint
       run: golangci-lint run --out-format=line-number > golangci-lint-report.txt || true
       continue-on-error: true
 
-    - name: golangci-lint
+    - name: golangci-lint with Reviewdog
       uses: reviewdog/action-golangci-lint@v2
       with:
         reporter: github-pr-review
