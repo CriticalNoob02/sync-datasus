@@ -1,0 +1,10 @@
+linters:
+  enable:
+    - staticcheck
+    - revive
+
+run:
+  timeout: 5m
+  skip-dirs:
+    - vendor
+  tests: false
