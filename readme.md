@@ -85,7 +85,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar
 
 
 <p align="center">
-  <a href="https://github.com/radarsaude/api-ia">
+  <a>
     <img src="https://images2.alphacoders.com/133/1335141.png" width="100%" height="200" alt="Banner">
   </a>
 <p/>
