@@ -1,5 +1,7 @@
 # Sync-Datasus
 
+![Banner](https://github.com/user-attachments/assets/b7e7c0aa-5fc1-4490-9c55-a665c037a7c3)
+
 ### Descrição:
 
 O `sync-datasus` é uma aplicação desenvolvida em Go para automatizar o processo de coleta e sincronização de dados da base FTP do DATASUS com tabelas em um banco de dados PostgreSQL. Este projeto facilita a obtenção de dados de saúde pública, garantindo que as informações estejam sempre atualizadas e prontas para análise.
@@ -71,21 +73,12 @@ Execute o binário gerado para iniciar o processo de sincronização:
 
 O aplicativo fará o download dos arquivos de dados, processará as informações e as inserirá nas tabelas do PostgreSQL conforme configurado.
 
-### Contribuição:
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+> [!NOTE]
+> No modelo que desenvolvi, as colunas da sua tabela no banco de dados devem ter os mesmos nomes das colunas nos arquivos do DATASUS. Caso você não queira importar uma coluna específica do DATASUS, basta que ela não exista na sua tabela. O serviço mapeia automaticamente as tabelas do banco e coleta apenas as informações correspondentes no DATASUS.
 
+> [!NOTE]
+> É possível filtrar os dados para um Estado específico aplicando uma filtragem no nome do arquivo. No entanto, será necessário implementar um loop na task Reader para aplicar essa filtragem corretamente.
 
-> **Observacoes técnicas:**
->
-> 1. No modelo que desenvolvi, as colunas da sua tabela no banco de dados devem ter os mesmos nomes das colunas nos arquivos do DATASUS. Caso você não queira importar uma coluna específica do DATASUS, basta que ela não exista na sua tabela. O serviço mapeia automaticamente as tabelas do banco e coleta apenas as informações correspondentes no DATASUS.
-> 2. É possível filtrar os dados para um Estado específico aplicando uma filtragem no nome do arquivo. No entanto, será necessário implementar um loop na task Reader para aplicar essa filtragem corretamente.
-
-
-
-
-<p align="center">
-  <a>
-    <img src="https://images2.alphacoders.com/133/1335141.png" width="100%" height="200" alt="Banner">
-  </a>
-<p/>
+> [!WARNING]
+> Nao existe nenhum decisor para atualizar os dados, ou seja, sempre que rodar o sync vai inserir tudo o que achar no banco, por mais que ja exista o dado no mesmo.
